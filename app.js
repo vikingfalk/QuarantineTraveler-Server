@@ -42,7 +42,7 @@ const mapPictureURLs = (countriesArray, pictureURLs) => {
 }
 
 app.get('/', async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://vikingfalk.github.io/quarantine-traveler')
+  res.setHeader('Access-Control-Allow-Origin', 'https://vikingfalk.github.io')
   try {
     const randomCountries = selectRandomCountries();
     const pictureURLs = await Promise.all(randomCountries.map(country => fetchPictureURL(country.name)));

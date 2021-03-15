@@ -29,6 +29,9 @@ const selectRandomCountries = (prevIndex) => {
 }
 
 const fetchPictureURL = async country => {
+  if (process.env.NODE_ENV === 'development') {
+    return 'https://picsum.photos/300/200';
+  }
   const axiosRes = await axios.get(`https://pixabay.com/api/?key=${API_KEY}&q=${country}%20landmark%20-art%20-black%20-white%20-gray%20-woman%20-man&image_type=photo&category=buildings&safesearch=true&orientation=horizontal`);
   const pictureIndex = getRandomInt(0, 5);
   return axiosRes.data.hits[pictureIndex].largeImageURL ;
@@ -42,7 +45,13 @@ const mapPictureURLs = (countriesArray, pictureURLs) => {
 }
 
 app.get('/', async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://vikingfalk.github.io')
+  if (process.env.NODE_ENV === 'development') {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  }
+
+  if (process.env.NODE_ENV === 'production') {
+    res.setHeader('Access-Control-Allow-Origin', 'https://vikingfalk.github.io');
+  }
   try {
     const randomCountries = selectRandomCountries();
     const pictureURLs = await Promise.all(randomCountries.map(country => fetchPictureURL(country.name)));

@@ -25,8 +25,9 @@ const fetchPictureURL = async country => {
     return 'https://picsum.photos/600/400';
   }
   const axiosRes = await axios.get(`https://pixabay.com/api/?key=${API_KEY}&q=${country}%20landmark%20-art%20-black%20-white%20-gray%20-woman%20-man&image_type=photo&category=buildings&safesearch=true&orientation=horizontal`);
-  const pictureIndex = getRandomInt(0, 5);
-  return axiosRes.data.hits[pictureIndex].largeImageURL ;
+  const images = axiosRes.data.hits;
+  const pictureIndex = images.length > 20 ? getRandomInt(0, 20) : getRandomInt(0, images.length);
+  return images[pictureIndex].largeImageURL ;
 }
 
 const mapPictureURLs = (countriesArray, pictureURLs) => {
